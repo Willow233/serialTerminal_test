@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="myFunction()">Click me</button>
+    <input type="text" id="lineToSend" style="width:calc(100% - 265px)">
+    <button onclick="send16Number()" style="width:100px">Send 16</button>
+    <script>
+        function myFunction() {
+            let a = '13 01 00 00 00 00 00 0d'
+            let arr = a.split(" ").map(item => '0x' + item) 
+            console.log(arr)
+        }
+
+        // 转16进制
+    async function send16Number() {
+        document.getElementById("lineToSend").value = (document.getElementById("lineToSend").value).split(" ").map(item => '0x' + item) 
+    console.log(document.getElementById("lineToSend").value);
+    }
+    </script>
+</body>
+
+</html>
