@@ -90,18 +90,26 @@ Baud:
             alert("Serial Connection Failed");
         }
     }
-    async function sendCharacterNumber() {
-        document.getElementById("lineToSend").value = String.fromCharCode(document.getElementById("lineToSend").value);
+    async function sendCharacterNumber() {	
+		// 在这里更新，不要在下面的函数更新
+		let dataHex = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
+		let dataChar = new Array(8);
+		for (let i = 0; i < 8; i++){
+			dataChar[i] = String.fromCharCode(dataHex[i]);
+		}
+		console.log(dataChar)
+		for (let i = 0; i < 8; i++){
+			await writer.write(dataChar[i]);
+		}
+		
     }
     async function sendSerialLine() {
         //转为16进制
-		var a = 1
-        dataToSend = document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item)
-        console.log(dataToSend)
-		console.log(a)
+		dataToSend = new Array(document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item))
+		console.log(dataToSend)
         if (document.getElementById("addLine").checked == true) dataToSend = dataToSend + "\r\n";
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
-        await writer.write(dataToSend);
+        await writer.write(dataToSend[0][0]);
     }
     async function listenToPort() {
         const textDecoder = new TextDecoderStream();
@@ -132,7 +140,7 @@ Baud:
             sendSerialLine();
         }
     })
-    document.getElementById("baud").value = (localStorage.baud == undefined ? 9600 : localStorage.baud);
+    document.getElementById("baud").value = (localStorage.baud == undefined ? 115200 : localStorage.baud);
     document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
     document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
 </script>
