@@ -95,8 +95,10 @@ Baud:
     }
     async function sendSerialLine() {
         //转为16进制
+		var a = 1
         dataToSend = document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item)
         console.log(dataToSend)
+		console.log(a)
         if (document.getElementById("addLine").checked == true) dataToSend = dataToSend + "\r\n";
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
         await writer.write(dataToSend);
