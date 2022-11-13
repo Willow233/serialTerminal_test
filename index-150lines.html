@@ -1,5 +1,5 @@
 <style>
-    * {
+    /* * {
         background-color: #352e2e;
         font-family: monospace;
         color: rgb(60, 255, 1);
@@ -17,17 +17,20 @@
         border: 1px solid;
         border-color: #696 #363 #363 #696;
     }
+*/
+    html {
+        padding: 20px;
+    }
 
     #serialResults {
         font-family: monospace;
         white-space: pre;
         height: calc(100% - 120px);
-        width: calc(100% - 20px);
-        border-style: solid;
-        overflow: scroll;
-        background-color: rgb(88, 92, 92);
+        width: 100%;
+        /* border-style: solid; */
+        overflow: auto;
+        /* background-color: rgb(192, 192, 192); */
         padding: 10px;
-        margin: 0px;
     }
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,44 +38,137 @@
 <meta name="Description" content="Set your baud speed and hit connect.
  A serial terminal that runs with out any plugins in chrome.">
 
-<button onclick="connectSerial()">Connect</button>
-Baud:
-<input type="text" id="baud" list="baudList" style="width: 10ch;" onclick="this.value = ''"
-    onchange="localStorage.baud = this.value">
-<datalist id="baudList">
-    <option value="110">110</option>
-    <option value="300">300</option>
-    <option value="600">600</option>
-    <option value="1200">1200</option>
-    <option value="2400">2400</option>
-    <option value="4800">4800</option>
-    <option value="9600">9600</option>
-    <option value="14400">14400</option>
-    <option value="19200">19200</option>
-    <option value="38400">38400</option>
-    <option value="57600">57600</option>
-    <option value="115200">115200</option>
-    <option value="128000">128000</option>
-    <option value="256000">256000</option>
-</datalist>
-<button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
+<div class="container">
+    <!-- 标题 -->
+    <header class="pb-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img">
+                <title>Bootstrap</title>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
+                    fill="currentColor"></path>
+            </svg>
+            <span class="fs-4">机械臂控制台 - control center</span>
+        </a>
+    </header>
+    <div class="row">
+        <div class="col-6 ">
+            <div class="p-5 text-white bg-dark rounded-3">
+                <!-- 端口选择 -->
+                <div class="input-group mb-3">
+                    <button type="button" class="btn btn-outline-light" onclick="connectSerial()">Connect</button>
+                    <span class="input-group-text" id="basic-addon1">Baud:</span>
+                    <input class="form-control" type="text" id="baud" list="baudList"
+                        style="width: 200px; text-align: center;" onclick="this.value = ''"
+                        onchange="localStorage.baud = this.value">
+                    <datalist id="baudList">
+                        <option value="110">110</option>
+                        <option value="300">300</option>
+                        <option value="600">600</option>
+                        <option value="1200">1200</option>
+                        <option value="2400">2400</option>
+                        <option value="4800">4800</option>
+                        <option value="9600">9600</option>
+                        <option value="14400">14400</option>
+                        <option value="19200">19200</option>
+                        <option value="38400">38400</option>
+                        <option value="57600">57600</option>
+                        <option value="115200">115200</option>
+                        <option value="128000">128000</option>
+                        <option value="256000">256000</option>
+                    </datalist>
+                    <button type="button" class="btn btn-outline-light"
+                        onclick="serialResultsDiv.innerHTML = '';">Clear</button>
+                </div>
+                <!-- 发送 -->
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="lineToSend" style="width:calc(100% - 300px)">
+                    <button type="button" class="btn btn-outline-light" onclick="sendSerialLine()"
+                        style="width:100px">Send</button>
+                    <button type="button" class="btn btn-outline-light" onclick="sendCharacterNumber()"
+                        style="width:150px">Send
+                        Char</button>
+                </div>
+                <!-- 设置 -->
+                <input class="form-check-input" type="checkbox" id="addLine"
+                    onclick="localStorage.addLine = this.checked;" checked>
+                <label class="form-check-label" for="addLine">send with /r/n</label>
 
-<br>
-<input type="text" id="lineToSend" style="width:calc(100% - 165px)">
-<button onclick="sendSerialLine()" style="width:45px">Send</button>
-<button onclick="sendCharacterNumber()" style="width:100px">Send Char</button>
-<br>
+                <input class="form-check-input" type="checkbox" id="echoOn"
+                    onclick="localStorage.echoOn = this.checked;" checked>
+                <label class="form-check-label" for="echoOn">echo</label>
+                <br>
 
-<input type="checkbox" id="addLine" onclick="localStorage.addLine = this.checked;" checked>
-<label for="addLine">send with /r/n</label>
-
-<input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>
-<label for="echoOn">echo</label>
+            </div>
+            <div class="p-5 text-white bg-dark rounded-3" style="margin-top: 20px;">
+                <!-- 新增按钮 -->
 
 
-<br>
-<div id="serialResults">
+                <div class="row align-items-center">
+                    <!-- 速度 -->
+                    <div class="col-8">
+                        <label for="customRange2" class="form-label">x 方向速度:</label>
+                        <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                    </div>
+                    <!-- 方向 -->
+                    <div class="col-4">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-light">Left</button>
+                            <button type="button" class="btn btn-outline-light">Right</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <!-- 速度 -->
+                    <div class="col-8">
+                        <label for="customRange2" class="form-label">y 方向速度:</label>
+                        <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                    </div>
+                    <!-- 方向 -->
+                    <div class="col-4">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-light">Left</button>
+                            <button type="button" class="btn btn-outline-light">Right</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <!-- 速度 -->
+                    <div class="col-8">
+                        <label for="customRange2" class="form-label">z 方向速度:</label>
+                        <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                    </div>
+                    <!-- 方向 -->
+                    <div class="col-4">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-light">Left</button>
+                            <button type="button" class="btn btn-outline-light">Right</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+        <div class="col-6">
+            <!-- 传输数据 -->
+            <div id="serialResults" class="h-100 p-5 mb-4 bg-light border rounded-3">
+            </div>
+
+        </div>
+
+    </div>
+    <br> © 2021 Mike Molinari (mmiscool) Source <a
+        href="https://github.com/mmiscool/serialTerminal.com">https://github.com/mmiscool/serialTerminal.com</a>
 </div>
+
+
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.2/js/bootstrap.bundle.min.js"></script>
 <script>
     var port, textEncoder, writableStreamClosed, writer;
     async function connectSerial() {
@@ -90,17 +186,25 @@ Baud:
         }
     }
     async function sendCharacterNumber() {
-        document.getElementById("lineToSend").value = String.fromCharCode(document.getElementById("lineToSend").value);
+        // 在这里更新，不要在下面的函数更新
+        let dataHex = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
+        let dataChar = new Array(8);
+        for (let i = 0; i < 8; i++) {
+            dataChar[i] = String.fromCharCode(dataHex[i]);
+        }
+        console.log(dataChar)
+        for (let i = 0; i < 8; i++) {
+            await writer.write(dataChar[i]);
+        }
+
     }
     async function sendSerialLine() {
         //转为16进制
-		var a = 1
-        dataToSend = new Array().concat(document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item))
+        dataToSend = document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item)
         console.log(dataToSend)
-		console.log(a)
         if (document.getElementById("addLine").checked == true) dataToSend = dataToSend + "\r\n";
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
-        await writer.write(dataToSend);
+        await writer.write(dataToSend[0][0]);
     }
     async function listenToPort() {
         const textDecoder = new TextDecoderStream();
@@ -131,9 +235,7 @@ Baud:
             sendSerialLine();
         }
     })
-    document.getElementById("baud").value = (localStorage.baud == undefined ? 9600 : localStorage.baud);
+    document.getElementById("baud").value = (localStorage.baud == undefined ? 115200 : localStorage.baud);
     document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
     document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
 </script>
-<br> © 2021 Mike Molinari (mmiscool) Source <a
-    href="https://github.com/mmiscool/serialTerminal.com">https://github.com/mmiscool/serialTerminal.com</a>
