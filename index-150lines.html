@@ -23,14 +23,20 @@
     }
 
     #serialResults {
-        font-family: monospace;
-        white-space: pre;
-        height: calc(100% - 120px);
+        white-space: pre-line;
+        height: 100%;
         width: 100%;
-        /* border-style: solid; */
         overflow: auto;
-        /* background-color: rgb(192, 192, 192); */
-        padding: 10px;
+        text-align: left;
+    }
+
+    input[type=range]::-webkit-slider-thumb{
+        appearance: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background-color: black;
+        border: 2px solid #fff;
     }
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,10 +44,10 @@
 <meta name="Description" content="Set your baud speed and hit connect.
  A serial terminal that runs with out any plugins in chrome.">
 
-<div class="container">
+<div class="container" style="min-width: 1150px;">
     <!-- 标题 -->
     <header class="pb-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <div class="d-flex align-items-center text-dark text-decoration-none">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img">
                 <title>Bootstrap</title>
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -49,7 +55,7 @@
                     fill="currentColor"></path>
             </svg>
             <span class="fs-4">机械臂控制台 - control center</span>
-        </a>
+        </div>
     </header>
     <div class="row">
         <div class="col-6 ">
@@ -81,7 +87,7 @@
                         onclick="serialResultsDiv.innerHTML = '';">Clear</button>
                 </div>
                 <!-- 发送 -->
-                <div class="input-group mb-3">
+                <div class="input-group" style="margin-bottom: 10px;">
                     <input type="text" class="form-control" id="lineToSend" style="width:calc(100% - 300px)">
                     <button type="button" class="btn btn-outline-light" onclick="sendSerialLine()"
                         style="width:100px">Send</button>
@@ -97,53 +103,40 @@
                 <input class="form-check-input" type="checkbox" id="echoOn"
                     onclick="localStorage.echoOn = this.checked;" checked>
                 <label class="form-check-label" for="echoOn">echo</label>
-                <br>
+                
 
             </div>
             <div class="p-5 text-white bg-dark rounded-3" style="margin-top: 20px;">
                 <!-- 新增按钮 -->
 
-
                 <div class="row align-items-center">
                     <!-- 速度 -->
-                    <div class="col-8">
-                        <label for="customRange2" class="form-label">x 方向速度:</label>
-                        <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                    <div class="col-9">
+                        <label for="customRange1" class="form-label">x 方向速度:</label>
+                        <input type="range" class="form-range" min="0" max="5" id="customRange1">
                     </div>
-                    <!-- 方向 -->
-                    <div class="col-4">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-outline-light">Left</button>
-                            <button type="button" class="btn btn-outline-light">Right</button>
-                        </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton1">Send</button>
                     </div>
                 </div>
                 <div class="row align-items-center">
                     <!-- 速度 -->
-                    <div class="col-8">
+                    <div class="col-9">
                         <label for="customRange2" class="form-label">y 方向速度:</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange2">
                     </div>
-                    <!-- 方向 -->
-                    <div class="col-4">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-outline-light">Left</button>
-                            <button type="button" class="btn btn-outline-light">Right</button>
-                        </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton2">Send</button>
                     </div>
                 </div>
                 <div class="row align-items-center">
                     <!-- 速度 -->
-                    <div class="col-8">
-                        <label for="customRange2" class="form-label">z 方向速度:</label>
-                        <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                    <div class="col-9">
+                        <label for="customRange3" class="form-label">z 方向速度:</label>
+                        <input type="range" class="form-range" min="0" max="5" id="customRange3">
                     </div>
-                    <!-- 方向 -->
-                    <div class="col-4">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-outline-light">Left</button>
-                            <button type="button" class="btn btn-outline-light">Right</button>
-                        </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton3">Send</button>
                     </div>
                 </div>
 
@@ -154,8 +147,20 @@
         </div>
         <div class="col-6">
             <!-- 传输数据 -->
-            <div id="serialResults" class="h-100 p-5 mb-4 bg-light border rounded-3">
+            <div class="h-100 p-5 mb-4 text-white text-center bg-dark border rounded-3" style="font-style: italic;">
+                <span>Real-time data:</span>
+                <div id="serialResults" >
+                    25648
+                    56856
+                    64684
+                    47967
+                    25648
+                    56856
+                    64684
+                    47967
+                    </div>
             </div>
+            
 
         </div>
 
@@ -238,4 +243,26 @@
     document.getElementById("baud").value = (localStorage.baud == undefined ? 115200 : localStorage.baud);
     document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
     document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
+
+    // 获取滑动条数据
+    const range1 = document.getElementById("customRange1")
+    range1.addEventListener("change",function(){
+        console.log(range1.value)
+    })
+    // 滑动条对应按钮
+    const btn1 = document.getElementById("customButton1")
+    // 长按连续触发
+    let tid
+    btn1.onmousedown = function(){
+        tid = setInterval(function() {
+            console.log(range1.value) 
+				}, 300);
+    }
+    btn1.onmouseup = function(){
+        clearInterval(tid)//清除定时器
+    }
+    // 单击
+    btn1.onclick = function(){
+        console.log(range1.value)
+    }
 </script>
