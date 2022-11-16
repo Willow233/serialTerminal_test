@@ -1,3 +1,5 @@
+![avatar](/pics/index.PNG)
+<!-- 
 ![cereal_terminal](https://user-images.githubusercontent.com/6439772/111710838-dd6a6300-8820-11eb-9083-88e0c25d104e.png)
 
 CerialTerminal bowl logo courtesy of https://github.com/drewgates
@@ -32,3 +34,4 @@ https://github.com/mmiscool/serialTerminal.com/issues/1
 
 Originally created by mmiscool as a simple example. 
 ZanzyTHEbar has made some significant improvements and added a settings page exposing more of the connection settings along with doing an xterm.js implementation under the advanced button. 
+ -->

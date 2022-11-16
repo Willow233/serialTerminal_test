@@ -26,8 +26,11 @@
         white-space: pre-line;
         height: 100%;
         width: 100%;
-        overflow: auto;
+        overflow-y: scroll;
         text-align: left;
+    }
+    #serialResults::-webkit-scrollbar{
+        display: none;
     }
 
     input[type=range]::-webkit-slider-thumb{
@@ -147,9 +150,9 @@
         </div>
         <div class="col-6">
             <!-- 传输数据 -->
-            <div class="h-100 p-5 mb-4 text-white text-center bg-dark border rounded-3" style="font-style: italic;">
+            <div class="p-5 mb-4 text-white text-center bg-dark border rounded-3" style="font-style: italic;">
                 <span>Real-time data:</span>
-                <div id="serialResults" >
+                <div id="serialResults" style="height: 420px;">
                     25648
                     56856
                     64684
@@ -158,6 +161,23 @@
                     56856
                     64684
                     47967
+                    25648
+                    56856
+                    64684
+                    47967
+                    25648
+                    56856
+                    64684
+                    47967
+                    25648
+                    56856
+                    64684
+                    47967
+                    25648
+                    56856
+                    64684
+                    47967
+                    ......
                     </div>
             </div>
             
