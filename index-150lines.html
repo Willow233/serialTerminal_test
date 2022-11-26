@@ -28,10 +28,10 @@
 <meta name="Description" content="Set your baud speed and hit connect.
  A serial terminal that runs with out any plugins in chrome.">
 
-<div class="container" style="min-width: 1150px;">
+<div class="container" style="min-width: 750px;">
     <!-- 标题 -->
-    <header class="pb-3 mb-4 border-bottom">
-        <div class="d-flex align-items-center text-dark text-decoration-none">
+    <header class="pb-3 mb-4 border-bottom ">
+        <div class="d-flex align-items-center text-dark text-decoration-none justify-content-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img">
                 <title>Bootstrap</title>
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -41,7 +41,7 @@
             <span class="fs-4">机械臂控制台 - control center</span>
         </div>
     </header>
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-6" style="width: 660px;">
             <div class="p-5 text-white bg-dark rounded-3">
                 <!-- 端口选择 -->
@@ -70,12 +70,27 @@
                     <button type="button" class="btn btn-outline-light"
                         onclick="serialResultsDiv.innerHTML = '';">Clear</button>
                 </div>
-                
+                <!-- 发送 -->
+                <!-- <div class="input-group" style="margin-bottom: 10px;">
+                    <input type="text" class="form-control" id="lineToSend" style="width:calc(100% - 300px)">
+                    <button type="button" class="btn btn-outline-light" onclick="sendSerialLine()"
+                        style="width:100px">Send</button>
+                    <button type="button" class="btn btn-outline-light" onclick="sendCharacterNumber()"
+                        style="width:150px">Send
+                        Char</button>
+                </div> -->
+                <!-- 设置 -->
+                <!-- <input class="form-check-input" type="checkbox" id="addLine"
+                    onclick="localStorage.addLine = this.checked;" checked>
+                <label class="form-check-label" for="addLine">send with /r/n</label>
 
+                <input class="form-check-input" type="checkbox" id="echoOn"
+                    onclick="localStorage.echoOn = this.checked;" checked>
+                <label class="form-check-label" for="echoOn">echo</label> -->
+                
             </div>
             <div class="p-5 text-white bg-dark rounded-3" style="margin-top: 20px;">
                 <!-- 新增按钮 -->
-
                 <div class="row align-items-center">
                     <!-- 速度 -->
                     <div class="col-9">
@@ -89,9 +104,6 @@
                             <span style="margin-left: 64px;">2</span>
                             <span style="margin-left: 64px;">3</span>
                         </div>
-                        
-
-
                     </div>
                     <div class="col-3">
                         <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton1">Send</button>
@@ -133,17 +145,17 @@
                         <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton3">Send</button>
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
      
 
     </div>
-    <br> © 2021 Mike Molinari (mmiscool) Source <a
+    <br> 
+    <p style="text-align: center;">
+        © 2021 Mike Molinari (mmiscool) Source <a
         href="https://github.com/mmiscool/serialTerminal.com">https://github.com/mmiscool/serialTerminal.com</a>
+    </p>
+ 
 </div>
 
 
@@ -169,13 +181,16 @@
     }
     async function sendCharacterNumber(data) {
         // 在这里更新，不要在下面的函数更新
+        let dataHex1 = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
+        console.log('@@',dataHex1);
+        console.log(data)
         let dataHex = new Array(data)
         console.log("新data",dataHex);
         let dataChar = new Array(8);
         for (let i = 0; i < 8; i++) {
             dataChar[i] = String.fromCharCode(dataHex[i]);
         }
-        // console.log(dataChar)
+        console.log(dataChar)
         for (let i = 0; i < 8; i++) {
             await writer.write(dataChar[i]);
         }
@@ -202,20 +217,25 @@
                 break;
             }
             // value is a string.
-            appendToTerminal(value);
+            // appendToTerminal(value); //显示返回数据
         }
     }
-    const serialResultsDiv = document.getElementById("serialResults");
+    /* const serialResultsDiv = document.getElementById("serialResults");
     async function appendToTerminal(newStuff) {
         serialResultsDiv.innerHTML += newStuff;
         if (serialResultsDiv.innerHTML.length > 3000) serialResultsDiv.innerHTML = serialResultsDiv.innerHTML.slice(serialResultsDiv.innerHTML.length - 3000);
 
         //scroll down to bottom of div
         serialResultsDiv.scrollTop = serialResultsDiv.scrollHeight;
-    }
-   
+    } */
+    /* document.getElementById("lineToSend").addEventListener("keyup", async function (event) {
+        if (event.keyCode === 13) {
+            sendSerialLine();
+        }
+    }) */
     document.getElementById("baud").value = (localStorage.baud == undefined ? 115200 : localStorage.baud);
- 
+    // document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
+    // document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
 
     // 获取滑动条数据
     const range1 = document.getElementById("customRange1")
@@ -266,7 +286,7 @@
     function sendRange1(){
         let req = [0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d]
         req[2] = data2
-        // console.log('发送更改后数据',req)
+        console.log(req)
         sendCharacterNumber(req)
     }
 </script>
