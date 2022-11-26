@@ -181,6 +181,7 @@
     }
     async function sendCharacterNumber(data) {
         // 在这里更新，不要在下面的函数更新
+		/*
         let dataHex1 = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
         console.log('@@',dataHex1);
         console.log(data)
@@ -194,8 +195,36 @@
         for (let i = 0; i < 8; i++) {
             await writer.write(dataChar[i]);
         }
+		*/
+		let dataHex = new Array(0x13, 0x01, 0x01, 0x00, 0x00, 0x00, 0x0d, 0x0a);
+		dataHex[2] = data2;
+		let dataChar = new Array(8);
+		for (let i = 0; i < 8; i++){
+			dataChar[i] = String.fromCharCode(dataHex[i]);
+		}
+		console.log(dataChar)
+		for (let i = 0; i < 8; i++){
+			await writer.write(dataChar[i]);
+		}
 
     }
+	/*
+	async function sendCharacterNumber() {	
+		// 在这里更新，不要在下面的函数更新
+		let dataHex = new Array(0x13, 0x01, 0x0f, 0x00, 0x00, 0x00, 0x0d, 0x0a);
+		let dataChar = new Array(8);
+		for (let i = 0; i < 8; i++){
+			dataChar[i] = String.fromCharCode(dataHex[i]);
+		}
+		console.log(dataChar)
+		for (let i = 0; i < 8; i++){
+			await writer.write(dataChar[i]);
+		}
+		
+    }
+	*/
+	
+	
     async function sendSerialLine() {
         //转为16进制
         dataToSend = document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item)
