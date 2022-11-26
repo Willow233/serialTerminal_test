@@ -1,6 +1,13 @@
 <style>
-    html {
+    html{
         padding: 20px;
+        background-color: rgb(250, 250, 250);
+    }
+    body{
+        background-color: transparent !important;
+    }
+    .container{
+        background-color: transparent;
     }
 
     #serialResults {
@@ -46,30 +53,35 @@
             <div class="p-5 text-white bg-dark rounded-3">
                 <!-- 端口选择 -->
                 <div class="input-group mb-3">
+                    <!-- <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">@</span>
+                        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                      </div> -->
                     <button type="button" class="btn btn-outline-light" onclick="connectSerial()">Connect</button>
                     <span class="input-group-text" id="basic-addon1">Baud:</span>
                     <input class="form-control" type="text" id="baud" list="baudList"
                         style="width: 200px; text-align: center;" onclick="this.value = ''"
-                        onchange="localStorage.baud = this.value">
-                    <datalist id="baudList">
-                        <option value="110">110</option>
-                        <option value="300">300</option>
-                        <option value="600">600</option>
-                        <option value="1200">1200</option>
-                        <option value="2400">2400</option>
-                        <option value="4800">4800</option>
-                        <option value="9600">9600</option>
-                        <option value="14400">14400</option>
-                        <option value="19200">19200</option>
-                        <option value="38400">38400</option>
-                        <option value="57600">57600</option>
-                        <option value="115200">115200</option>
-                        <option value="128000">128000</option>
-                        <option value="256000">256000</option>
-                    </datalist>
-                    <button type="button" class="btn btn-outline-light"
-                        onclick="serialResultsDiv.innerHTML = '';">Clear</button>
+                        onchange="localStorage.baud = this.value" aria-describedby="basic-addon1">
+                    
+                    <!-- <button type="button" class="btn btn-outline-light"
+                        onclick="serialResultsDiv.innerHTML = '';">Clear</button> -->
                 </div>
+                <datalist id="baudList">
+                    <option value="110">110</option>
+                    <option value="300">300</option>
+                    <option value="600">600</option>
+                    <option value="1200">1200</option>
+                    <option value="2400">2400</option>
+                    <option value="4800">4800</option>
+                    <option value="9600">9600</option>
+                    <option value="14400">14400</option>
+                    <option value="19200">19200</option>
+                    <option value="38400">38400</option>
+                    <option value="57600">57600</option>
+                    <option value="115200">115200</option>
+                    <option value="128000">128000</option>
+                    <option value="256000">256000</option>
+                </datalist>
                 <!-- 发送 -->
                 <!-- <div class="input-group" style="margin-bottom: 10px;">
                     <input type="text" class="form-control" id="lineToSend" style="width:calc(100% - 300px)">
@@ -106,7 +118,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton1">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton1">Send</button>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-top:20px;">
@@ -124,7 +136,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton2">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton2">Send</button>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-top:20px;">
@@ -142,7 +154,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton3">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton3">Send</button>
                     </div>
                 </div>
             </div>
@@ -151,7 +163,7 @@
 
     </div>
     <br> 
-    <p style="text-align: center;">
+    <p style="text-align: center; font-size: 11px;">
         © 2021 Mike Molinari (mmiscool) Source <a
         href="https://github.com/mmiscool/serialTerminal.com">https://github.com/mmiscool/serialTerminal.com</a>
     </p>
@@ -179,24 +191,12 @@
             alert("Serial Connection Failed");
         }
     }
-    async function sendCharacterNumber(data) {
+    let data1 //按钮对应数据
+    let data2 //滑动条对应数据
+    async function sendCharacterNumber() {
         // 在这里更新，不要在下面的函数更新
-		/*
-        let dataHex1 = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
-        console.log('@@',dataHex1);
-        console.log(data)
-        let dataHex = new Array(data)
-        console.log("新data",dataHex);
-        let dataChar = new Array(8);
-        for (let i = 0; i < 8; i++) {
-            dataChar[i] = String.fromCharCode(dataHex[i]);
-        }
-        console.log(dataChar)
-        for (let i = 0; i < 8; i++) {
-            await writer.write(dataChar[i]);
-        }
-		*/
 		let dataHex = new Array(0x13, 0x01, 0x01, 0x00, 0x00, 0x00, 0x0d, 0x0a);
+        dataHex[1] = data1
 		dataHex[2] = data2;
 		let dataChar = new Array(8);
 		for (let i = 0; i < 8; i++){
@@ -208,23 +208,7 @@
 		}
 
     }
-	/*
-	async function sendCharacterNumber() {	
-		// 在这里更新，不要在下面的函数更新
-		let dataHex = new Array(0x13, 0x01, 0x0f, 0x00, 0x00, 0x00, 0x0d, 0x0a);
-		let dataChar = new Array(8);
-		for (let i = 0; i < 8; i++){
-			dataChar[i] = String.fromCharCode(dataHex[i]);
-		}
-		console.log(dataChar)
-		for (let i = 0; i < 8; i++){
-			await writer.write(dataChar[i]);
-		}
-		
-    }
-	*/
-	
-	
+
     async function sendSerialLine() {
         //转为16进制
         dataToSend = document.getElementById("lineToSend").value.split(" ").map(item => '0x' + item)
@@ -267,10 +251,26 @@
     // document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
 
     // 获取滑动条数据
-    const range1 = document.getElementById("customRange1")
-    let data2
-    range1.addEventListener("change",function(){
-        switch (range1.value) {
+    const ranges = document.getElementsByClassName("form-range")
+    function getDate1(i){
+        switch (i) {
+            case 0:
+                data1 = 0x00
+                break;
+            case 1:
+                data1 = 0x01
+                break;
+            case 2:
+                data1 = 0x02
+                break; 
+            default:
+            data1 = 0x00
+                break;
+        }
+        console.log(data1)
+    }
+    function getDate2(i){
+        switch (ranges[i].value) {
             case '0':
                 data2 = 0x0f
                 break;
@@ -294,28 +294,35 @@
                 break;
         }
         console.log(data2)
-    })
+    }
+    // range1.addEventListener("change",() =>{
+    //     getDate2()
+    // } )
     // 滑动条对应按钮
-    const btn1 = document.getElementById("customButton1")
+    const btns = document.getElementsByClassName('sendBtn')
+    // const btn1 = document.getElementById("customButton1")
     // 长按连续触发
     let tid
-    btn1.onmousedown = function(){
-        tid = setInterval(function() {
-            sendRange1()
+    for(let i = 0;i<btns.length;i++){
+        btns[i].onmousedown = function(){
+            getDate1(i)
+            getDate2(i)
+            tid = setInterval(function() {
+            sendCharacterNumber()
             }, 300);
     }
-    btn1.onmouseup = function(){
+    btns[i].onmouseup = function(){
         clearInterval(tid)//清除定时器
     }
     // 单击
-    btn1.onclick = function(){
-        sendRange1()
+    btns[i].onclick = function(){
+        getDate1(i)
+        getDate2(i)
+        sendCharacterNumber()
     }
-    // 获取滑动条数据并发送
-    function sendRange1(){
-        let req = [0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d]
-        req[2] = data2
-        console.log(req)
-        sendCharacterNumber(req)
     }
+   
+
+    // y方向
+    
 </script>
