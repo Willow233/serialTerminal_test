@@ -1,23 +1,4 @@
 <style>
-    /* * {
-        background-color: #352e2e;
-        font-family: monospace;
-        color: rgb(60, 255, 1);
-        padding: 0px;
-    }
-
-    button,
-    datalist {
-        background-color: rgb(85, 85, 85);
-    }
-
-    input[type=text] {
-        color: rgb(179, 255, 179);
-        background-color: rgb(102, 86, 86);
-        border: 1px solid;
-        border-color: #696 #363 #363 #696;
-    }
-*/
     html {
         padding: 20px;
     }
@@ -61,7 +42,7 @@
         </div>
     </header>
     <div class="row">
-        <div class="col-6 ">
+        <div class="col-6" style="width: 660px;">
             <div class="p-5 text-white bg-dark rounded-3">
                 <!-- 端口选择 -->
                 <div class="input-group mb-3">
@@ -89,23 +70,6 @@
                     <button type="button" class="btn btn-outline-light"
                         onclick="serialResultsDiv.innerHTML = '';">Clear</button>
                 </div>
-                <!-- 发送 -->
-                <div class="input-group" style="margin-bottom: 10px;">
-                    <input type="text" class="form-control" id="lineToSend" style="width:calc(100% - 300px)">
-                    <button type="button" class="btn btn-outline-light" onclick="sendSerialLine()"
-                        style="width:100px">Send</button>
-                    <button type="button" class="btn btn-outline-light" onclick="sendCharacterNumber()"
-                        style="width:150px">Send
-                        Char</button>
-                </div>
-                <!-- 设置 -->
-                <input class="form-check-input" type="checkbox" id="addLine"
-                    onclick="localStorage.addLine = this.checked;" checked>
-                <label class="form-check-label" for="addLine">send with /r/n</label>
-
-                <input class="form-check-input" type="checkbox" id="echoOn"
-                    onclick="localStorage.echoOn = this.checked;" checked>
-                <label class="form-check-label" for="echoOn">echo</label>
                 
 
             </div>
@@ -117,26 +81,53 @@
                     <div class="col-9">
                         <label for="customRange1" class="form-label">x 方向速度:</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange1">
+                        <div class="label">
+                            <span>-3</span>
+                            <span style="margin-left: 54px;">-2</span>
+                            <span style="margin-left: 58px;">-1</span>
+                            <span style="margin-left: 58px;">1</span>
+                            <span style="margin-left: 64px;">2</span>
+                            <span style="margin-left: 64px;">3</span>
+                        </div>
+                        
+
+
                     </div>
                     <div class="col-3">
                         <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton1">Send</button>
                     </div>
                 </div>
-                <div class="row align-items-center">
+                <div class="row align-items-center" style="margin-top:20px;">
                     <!-- 速度 -->
                     <div class="col-9">
                         <label for="customRange2" class="form-label">y 方向速度:</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                        <div class="label">
+                            <span>-3</span>
+                            <span style="margin-left: 54px;">-2</span>
+                            <span style="margin-left: 58px;">-1</span>
+                            <span style="margin-left: 58px;">1</span>
+                            <span style="margin-left: 64px;">2</span>
+                            <span style="margin-left: 64px;">3</span>
+                        </div>
                     </div>
                     <div class="col-3">
                         <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton2">Send</button>
                     </div>
                 </div>
-                <div class="row align-items-center">
+                <div class="row align-items-center" style="margin-top:20px;">
                     <!-- 速度 -->
                     <div class="col-9">
                         <label for="customRange3" class="form-label">z 方向速度:</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange3">
+                        <div class="label">
+                            <span>-3</span>
+                            <span style="margin-left: 54px;">-2</span>
+                            <span style="margin-left: 58px;">-1</span>
+                            <span style="margin-left: 58px;">1</span>
+                            <span style="margin-left: 64px;">2</span>
+                            <span style="margin-left: 64px;">3</span>
+                        </div>
                     </div>
                     <div class="col-3">
                         <button type="button" class="btn btn-outline-light" style="margin-top:30px; width:100px" id="customButton3">Send</button>
@@ -148,41 +139,7 @@
 
             </div>
         </div>
-        <div class="col-6">
-            <!-- 传输数据 -->
-            <div class="p-5 mb-4 text-white text-center bg-dark border rounded-3" style="font-style: italic;">
-                <span>Real-time data:</span>
-                <div id="serialResults" style="height: 420px;">
-                    25648
-                    56856
-                    64684
-                    47967
-                    25648
-                    56856
-                    64684
-                    47967
-                    25648
-                    56856
-                    64684
-                    47967
-                    25648
-                    56856
-                    64684
-                    47967
-                    25648
-                    56856
-                    64684
-                    47967
-                    25648
-                    56856
-                    64684
-                    47967
-                    ......
-                    </div>
-            </div>
-            
-
-        </div>
+     
 
     </div>
     <br> © 2021 Mike Molinari (mmiscool) Source <a
@@ -210,14 +167,15 @@
             alert("Serial Connection Failed");
         }
     }
-    async function sendCharacterNumber() {
+    async function sendCharacterNumber(data) {
         // 在这里更新，不要在下面的函数更新
-        let dataHex = new Array(0x13, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d);
+        let dataHex = new Array(data)
+        console.log("新data",dataHex);
         let dataChar = new Array(8);
         for (let i = 0; i < 8; i++) {
             dataChar[i] = String.fromCharCode(dataHex[i]);
         }
-        console.log(dataChar)
+        // console.log(dataChar)
         for (let i = 0; i < 8; i++) {
             await writer.write(dataChar[i]);
         }
@@ -255,19 +213,38 @@
         //scroll down to bottom of div
         serialResultsDiv.scrollTop = serialResultsDiv.scrollHeight;
     }
-    document.getElementById("lineToSend").addEventListener("keyup", async function (event) {
-        if (event.keyCode === 13) {
-            sendSerialLine();
-        }
-    })
+   
     document.getElementById("baud").value = (localStorage.baud == undefined ? 115200 : localStorage.baud);
-    document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
-    document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
+ 
 
     // 获取滑动条数据
     const range1 = document.getElementById("customRange1")
+    let data2
     range1.addEventListener("change",function(){
-        console.log(range1.value)
+        switch (range1.value) {
+            case '0':
+                data2 = 0x0f
+                break;
+            case '1':
+                data2 = 0x0e
+                break;
+            case '2':
+                data2 = 0x0d
+                break; 
+            case '3':
+                data2 = 0x01
+                break; 
+            case '4':
+                data2 = 0x02
+                break;
+            case '5':
+                data2 = 0x03
+                break;
+            default:
+            data2 = 0x01
+                break;
+        }
+        console.log(data2)
     })
     // 滑动条对应按钮
     const btn1 = document.getElementById("customButton1")
@@ -275,14 +252,21 @@
     let tid
     btn1.onmousedown = function(){
         tid = setInterval(function() {
-            console.log(range1.value) 
-				}, 300);
+            sendRange1()
+            }, 300);
     }
     btn1.onmouseup = function(){
         clearInterval(tid)//清除定时器
     }
     // 单击
     btn1.onclick = function(){
-        console.log(range1.value)
+        sendRange1()
+    }
+    // 获取滑动条数据并发送
+    function sendRange1(){
+        let req = [0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d]
+        req[2] = data2
+        // console.log('发送更改后数据',req)
+        sendCharacterNumber(req)
     }
 </script>
