@@ -106,7 +106,7 @@
                 <div class="row align-items-center">
                     <!-- 速度 -->
                     <div class="col-9">
-                        <label for="customRange1" class="form-label">x 方向速度:</label>
+                        <label for="customRange1" class="form-label">Joint 1</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange1">
                         <div class="label">
                             <span>-3</span>
@@ -118,13 +118,13 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton1">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton1">Move</button>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-top:20px;">
                     <!-- 速度 -->
                     <div class="col-9">
-                        <label for="customRange2" class="form-label">y 方向速度:</label>
+                        <label for="customRange2" class="form-label">Joint 2</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange2">
                         <div class="label">
                             <span>-3</span>
@@ -136,13 +136,13 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton2">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton2">Move</button>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-top:20px;">
                     <!-- 速度 -->
                     <div class="col-9">
-                        <label for="customRange3" class="form-label">z 方向速度:</label>
+                        <label for="customRange3" class="form-label">Joint 3</label>
                         <input type="range" class="form-range" min="0" max="5" id="customRange3">
                         <div class="label">
                             <span>-3</span>
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton3">Send</button>
+                        <button type="button" class="btn btn-outline-light sendBtn" style="margin-top:30px; width:100px" id="customButton3">Move</button>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
     async function sendCharacterNumber() {
         // 在这里更新，不要在下面的函数更新
 		let dataHex = new Array(0x13, 0x01, 0x01, 0x00, 0x00, 0x00, 0x0d, 0x0a);
-        dataHex[1] = data1
+        dataHex[1]  = data1
 		dataHex[2] = data2;
 		let dataChar = new Array(8);
 		for (let i = 0; i < 8; i++){
