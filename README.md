@@ -1,6 +1,6 @@
 <div style="text-align:center">
 <img src="./pics/logoZ.svg" width = "50"/>
-<p style="font-weight:600;">机械臂控制台PC端页面展示</p>
+<p align="center" style="font-weight:600;">机械臂控制台PC端页面展示</p>
 </div>
 
 
