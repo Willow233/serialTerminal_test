@@ -1,6 +1,13 @@
-![avatar](/pics/index2.0%20.PNG)
+<div style="text-align:center">
+<img src="./pics/logoZ.svg" width = "50"/>
+<p style="font-weight:600;">机械臂控制台PC端页面展示</p>
+</div>
 
-![avatar](/pics/index.PNG)
+
+![avatar](/pics/index3.0%20.PNG)
+
+
+
 <!-- 
 ![cereal_terminal](https://user-images.githubusercontent.com/6439772/111710838-dd6a6300-8820-11eb-9083-88e0c25d104e.png)
 
