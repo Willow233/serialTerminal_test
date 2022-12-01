@@ -6,6 +6,10 @@
 
 ![avatar](/pics/index3.0%20.PNG)
 
+<div align="center">
+<p align="center" style="font-weight:600;"><b>机械臂实物照片</b></p>
+<img src="/pics/arm.jpg" width = "235"/>
+</div>
 
 
 <!-- 
