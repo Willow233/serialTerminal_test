@@ -8,7 +8,7 @@
 
 <div align="center">
 <p align="center" style="font-weight:600;"><b>机械臂实物照片</b></p>
-<img src="/pics/arm.jpg" width = "235"/>
+<img src="/pics/arm.jpg" width = "335"/>
 </div>
 
 
